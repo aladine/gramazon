@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head id="headder">
+		<title>Gramazon Music - Search</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		
+		<meta property="og:url" content="https://72rats.com/gramazon-search.html">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Gramazon Music">
+		<meta property="og:description" content="The Experience">
+		<meta property="og:image" content="https://72rats.com/images/gramazon-music.jpg">
+		<meta property="og:width" content="1510">
+		<meta property="og:height" content="1128">
+
+		
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+	</head>
+	<body class="is-preload">
+	
+
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="gramazon-music.html">Gramazon Music</a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="gramazon-login.html">Login</a></li>
+							<li><a href="gramazon-music.html">Home</a></li>
+							<li><a href="gramazon-recommendations.html">Taste Collections</a></li>
+                            <li><a href="gramazon-search.html">Search</a></li>
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Main -->
+				<div id="main" class="style1">
+					<div class="container">
+						<header class="major">
+							<h2>Gramazon Music</h2>
+							<p>If you still haven't found what your looking for try here.</p>
+                            <p>[coming soon]</p>
+					
+						</header>
+					</div>
+				</div>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			
+<script type="text/javascript">
+	
+	
+function getMe() {
+	$.ajax({ 
+		method: "GET",
+		url: "https://api.music.amazon.dev/v1/me",
+		headers: { 
+   			'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+			'Content-Type' : 'application/json',
+			'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+		fail: function(data){        
+   			$(location).attr("href", "gramazon-login.html");
+	   	},
+		success: function(data){        
+			var jsonResponse = data;
+			//console.log("jsonResponse - " + JSON.stringify(jsonResponse));
+	   		$('#userBlurb').text('Hi ' + jsonResponse.data.user.name + '(' + jsonResponse.data.user.tier + ')' );
+	   	}
+	});
+	return false;
+};
+			
+//$( document ).ready( getMe );
+</script>
+
+	</body>
+</html>

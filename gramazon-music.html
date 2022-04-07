@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head id="headder">
+		<title>Gramazon Music - Home</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		
+		<meta property="og:url" content="https://72rats.com/gramazon-music.html">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Gramazon Music">
+		<meta property="og:description" content="The Experience">
+		<meta property="og:image" content="https://72rats.com/images/gramazon-music.jpg">
+		<meta property="og:width" content="1510">
+		<meta property="og:height" content="1128">
+
+		
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+            
+            <style>
+                .item_art  {
+                    float: left;
+                    margin: 0 15px 0 0;
+                }
+            .container {
+                clear: both;
+            }
+            .content {
+                clear: both;
+            }
+            
+            .flexcontainer {
+                display: flex;
+            }
+            
+            .flexdiv1 {
+                flex: 1;
+            }
+            
+            .flexdiv2 {
+                flex: 2;
+                margin-right: 20px;
+            }
+            
+            .container {
+                padding: 20px;
+            }
+            
+                </style>
+	</head>
+	<body class="is-preload">
+	
+
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="gramazon-music.html">Gramazon Music</a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="gramazon-login.html">Login</a></li>
+							<li><a href="gramazon-music.html">Home</a></li>
+							<li><a href="gramazon-recommendations.html">Taste Collections</a></li>
+                            <li><a href="gramazon-search.html">Search</a></li>
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Main -->
+				<div id="main" class="style1">
+					<div class="container">
+						<header class="major">
+							<h2>Gramazon Music</h2>
+							<p>Welcome <span id="userBlurb"></span>!
+                            On this page you can create a new Taste Collection for sharing.
+                            Taste Collections are only album focused for now.
+                            After you have created your Taste Collection, export it and submit it
+                            to be added to the Taste Collections page. Start by entering a title and a
+                            description with hashtags, then search for albums to add.</p>
+                            <form id="tc_export">
+                                <input type="button" id="save" value="Save Progress" onclick="updateTasteCollection()" />
+                                <input type="button" id="export" value="Export" onclick="exportTasteCollection()" />
+                                <input type="button" id="reset" value="Reset" onclick="resetTasteCollection()" />
+                            </form>
+
+						</header>
+                    </div>
+
+                    <section class="flexcontainer">
+                        <div id="buildTC" class="flexdiv1">
+                            <h2>Create a new Taste Collection</h2>
+                            <form id="tc_root">
+                                Title: <input type="text" id="title" placeholder="give your taste collection a name" />
+                                Description: <input type="text" id="description" placeholder="tell us about what is in your taste collection" />
+                            </form>
+                            <a id="downloadAnchorElem" style="display:none"></a>
+                            
+                            <br />
+                            
+                            <div id="collectionContent">
+                            </div>
+                            
+                        </div>
+                        <div id="searchTC" class="flexdiv1">
+                            <h2>Search for albums to add to your Taste Collection</h2>
+                            
+                            <form id="tc_search">
+                                Album Search : <input type="text" id="search_string" placeholder="albnum name or artist" />
+                                <input type="button" id="update" value="Search (click to search)" onclick="searchForAlbums(this.form)" />
+                            </form>
+                            
+                            <div id="searchResults">
+                            </div>
+
+                        </div>
+
+                    </section>
+				</div>
+
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			
+<script type="text/javascript">
+    function createOrUpdateTasteCollection (user_data) {
+        var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+        if (!tasteCollection) {
+            tasteCollection = new Object();
+        }
+        
+        tasteCollection.name = user_data.name;
+        tasteCollection.id = user_data.id;
+        tasteCollection.url = user_data.url;
+        
+        if (!tasteCollection.rows) {
+            tasteCollection.rows = [{title: "", type: "albums", items:[]}];
+        }
+        
+        if (tasteCollection.title)
+        {
+            $("#tc_root input[id=title]").val(tasteCollection.title);
+        }
+        
+        if (tasteCollection.description)
+        {
+            $("#tc_root input[id=description]").val(tasteCollection.description);
+        }
+        
+        console.log("createOrUpdateTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
+        localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
+    };
+
+function exportTasteCollection() {
+    var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+    var filename = tasteCollection.name.replace(/ /g,"_") + "-" + tasteCollection.title.replace(/ /g,"_");
+    console.log("exportTasteCollection filename " + filename);
+    tasteCollection.filename = filename;
+
+    var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(tasteCollection));
+    var dlAnchorElem = document.getElementById('downloadAnchorElem');
+    dlAnchorElem.setAttribute("href",     dataStr     );
+    dlAnchorElem.setAttribute("download", filename +".json");
+    dlAnchorElem.click();
+    
+    return false;
+};
+
+
+function resetTasteCollection() {
+    var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+    tasteCollection.rows = [{title: "", type: "albums", items:[]}];
+    tasteCollection.title = "";
+    tasteCollection.description = "";
+    $("#tc_root input[id=title]").val("");
+    $("#tc_root input[id=description]").val("");
+    $("#collectionContent").text("");
+
+    console.log("resetTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
+    localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
+
+    return false;
+};
+
+function searchForAlbums(formData) {
+    $("#searchResults").text("Searching...");
+    
+    var searchString = formData.search_string.value;
+    var jsonData = '{"searchFilters": [ {"query": "' + searchString + '"}]}';
+    
+    $.ajax({
+        method: "POST",
+        url: "https://api.music.amazon.dev/v1/search/albums",
+        dataType: "json",
+        data: jsonData,
+        headers: {
+            'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+        error: function(data){
+           console.log("searchForAlbums error - " + JSON.stringify(data));
+           //$(location).attr("href", "gramazon-login.html");
+        },
+        success: function(data){
+            var jsonResponse = data;
+            //console.log("jsonResponse - " + JSON.stringify(jsonResponse));
+            addResultsToPage(jsonResponse);
+        }
+    });
+    return false;
+};
+
+function addResultsToPage(jsonResponse) {
+    $("#searchResults").text("");
+    var albums = jsonResponse.data.searchAlbums.edges;
+    
+    for (let i in albums) {
+        var album = albums[i].node;
+        $("#searchResults").append("<div class=\"content\" id=\"" + album.id + "\">" +
+                                   "<img class=\"item_art\" id=\"image\" src=\"" +
+                                   album.images[1].url +
+                                   "\" alt=\"\" width=\"100\" height=\"100\">" +
+                                   "<h4 id=\"title\">" +
+                                   album.title +
+                                   " by " +
+                                   album.artists[0].name +
+                                   "<br />" +
+                                   "<a id=\"addToTC\" onclick=\"addToTasteCollection('" +
+                                   album.id +
+                                   "')\">Add To Taste Collection</a></h4></div>");
+    }
+};
+
+function addToTasteCollection(albumId) {
+    var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+
+    var nextItemIndex = tasteCollection.rows[0].items.length;
+    tasteCollection.rows[0].items[nextItemIndex] = {asin: albumId, description: ""};
+    
+    $("#" + albumId).appendTo("#collectionContent");
+    $("#" + albumId).children("#title").children("#addToTC").hide();
+    $("#" + albumId).children("#title").append(descriptionFormForAlbum(albumId));
+
+    console.log("addToTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
+    localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
+    return false;
+};
+
+function descriptionFormForAlbum(albumId) {
+    return "<form id=\"" + albumId + "_desc\"> " +
+    "Description: <input type=\"text\" id=\"description\" placeholder=\"tell us about why this album is in your taste collection\" /> </form>";
+}
+
+function updateTasteCollection() {
+    var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+
+    tasteCollection.title  = $("#tc_root input[id=title]").val();
+    tasteCollection.description = $("#tc_root input[id=description]").val();
+
+    console.log("updateTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
+    localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
+    return false;
+};
+	
+function getMe() {
+	$.ajax({
+		method: "GET",
+		url: "https://api.music.amazon.dev/v1/me",
+		headers: { 
+   			'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+			'Content-Type' : 'application/json',
+			'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+		error: function(data){        
+   			$(location).attr("href", "gramazon-login.html");
+	   	},
+		success: function(data){        
+			var jsonResponse = data;
+			//console.log("jsonResponse - " + JSON.stringify(jsonResponse));
+	   		$("#userBlurb").text(jsonResponse.data.user.name );
+           console.log("get me success jsonResponse.data.user " + JSON.stringify(jsonResponse.data.user));
+           createOrUpdateTasteCollection(jsonResponse.data.user);
+	   	}
+	});
+	return false;
+};
+
+$(document).on("keydown", "form", function(event) {
+               return event.key != "Enter";
+               });
+               
+$( document ).ready( getMe );
+</script>
+
+	</body>
+</html>

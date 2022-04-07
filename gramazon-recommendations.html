@@ -1,0 +1,298 @@
+<!DOCTYPE HTML>
+<!--
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head id="headder">
+		<title>Gramazon Music - Recommendations</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		
+		<meta property="og:url" content="https://72rats.com/gramazon-recommendations.html">
+		<meta property="og:type" content="website">
+		<meta property="og:title" content="Gramazon Music">
+		<meta property="og:description" content="The Experience">
+		<meta property="og:image" content="https://72rats.com/images/gramazon-music.jpg">
+		<meta property="og:width" content="1510">
+		<meta property="og:height" content="1128">
+
+		
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+		<link rel="manifest" href="/site.webmanifest">
+            
+        <style>
+            .item_art  {
+                float: left;
+                margin: 0 15px 0 0;
+            }
+        .container {
+            clear: both;
+        }
+        .content {
+            clear: both;
+        }
+        
+        .flexcontainer {
+            display: flex;
+        }
+        
+        .flexdiv1 {
+            flex: 1;
+        }
+        
+        .flexdivp5 {
+            flex: .5;
+        }
+        
+        .flexdiv2 {
+            flex: 2;
+            margin-right: 20px;
+        }
+        
+        .container {
+            padding: 20px;
+        }
+        
+        </style>
+        
+	</head>
+	<body class="is-preload">
+	
+
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1 id="logo"><a href="gramazon-music.html">Gramazon Music</a></h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="gramazon-login.html">Login</a></li>
+							<li><a href="gramazon-music.html">Home</a></li>
+							<li><a href="gramazon-recommendations.html">Taste Collections</a></li>
+                            <li><a href="gramazon-search.html">Search</a></li>
+						</ul>
+					</nav>
+				</header>
+
+			<!-- Main -->
+				<div id="main" class="style1">
+					<div class="container">
+						<header class="major">
+							<h2>Gramazon Music</h2>
+							<p>Come see what people are sharing. Select something from the drop down to get started</p>
+                            <p>
+                                <select name="Recommendations" id="recsDropDown" onChange="javascript:selectRecs();">
+                                    <option value="">Select something</option>
+                                </select>
+                            </p>
+					
+						</header>
+					</div>
+
+                
+                    <section class="flexcontainer">
+                        <div id="recsContainer" class="flexdiv2">
+                        </div>
+                        <div id="playerContainer" class="flexdivp5">
+
+                        </div>
+                        <!--
+                         populated by js
+                         -->
+                    </section>
+                </div>
+
+                
+			<!-- Footer -->
+				<footer id="footer">
+					<ul class="copyright">
+						<li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+					</ul>
+				</footer>
+
+		</div>
+
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			
+<script type="text/javascript">
+
+    
+    function selectRecs() {
+        var fileToLoad = $("#recsDropDown").val();
+        
+        if (fileToLoad == "") {
+            displayRecs("");
+            return;
+        }
+
+        $.getJSON("assets/json/" + fileToLoad + ".json", function(data){
+                  var jsonResponse = data;
+                  console.log("success selectRecs data - " + JSON.stringify(jsonResponse));
+                    displayRecs(jsonResponse);
+                  }
+        );
+
+    };
+
+function displayRecs( jsonResponse ) {
+    $("#recsContainer").empty();
+    $("#recsContainer").append("<div class=\"container\"><h2>" +
+                               "<a href=\"" +
+                               jsonResponse.url + 
+                               "\" target=\"_blank\">" +
+                               jsonResponse.name +
+                               "</a> shared " +
+                               jsonResponse.title +
+                               " <button onclick=\"followUser('" +
+                               jsonResponse.id +
+                               "')\">Follow</button>" +
+                               "</h2><br /><h3>" +
+                               jsonResponse.description +
+                               "</h3></div>");
+
+                               populateRows(jsonResponse.rows);
+    //$("#recsContainer").append("<div>" + JSON.stringify(jsonResponse) + "</div>");
+};
+
+function populateRows(rows_data) {
+    for (let i in rows_data) {
+        $("#recsContainer").append("<div class=\"container\">");
+        
+        if (rows_data[i].title) {
+            $("#recsContainer").append("<h2>" +
+                                       rows_data[i].title +
+                                       "</h2><br />");
+        }
+        
+        populateItems(rows_data[i].items, rows_data[i].type);
+        $("#recsContainer").append("</div>");
+    }
+};
+
+function populateItems(item_data, type) {
+    for (let i in item_data) {
+        $("#recsContainer").append("<div class=\"content\">" +
+                                   "<img class=\"item_art\" id=\"image_" +
+                                   item_data[i].asin +
+                                   "\" src=\"\" alt=\"\" width=\"200\" height=\"200\">" +
+                                   "<h2 id=\"title_" +
+                                   item_data[i].asin +
+                                   "\"></h2><h3>" +
+                                   "<a id=\"sampleMusic_" +
+                                   item_data[i].asin +
+                                   "\" onclick=\"\" >Sample on this page</a> or " +
+                                   "<a id=\"playMusic_" +
+                                   item_data[i].asin +
+                                   "\" href=\"\" target=\"_blank\">Open in Amazon Music</a></h3><h4><p>" +
+                                   item_data[i].description +
+                                   "</p></h4></div>");
+        getItemDataForAsin(item_data[i].asin, type);
+    }
+};
+
+function getItemDataForAsin( asin, type ) {
+    $.ajax({
+        method: "GET",
+        url: "https://api.music.amazon.dev/v1/" + type + "/" + asin,
+        headers: {
+            'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+        error: function(data){
+           console.log("getItemDataForAsin error - " + JSON.stringify(data));
+           $(location).attr("href", "gramazon-login.html");
+        },
+        success: function(data){
+            var jsonResponse = data;
+            console.log("jsonResponse - " + JSON.stringify(jsonResponse));
+           $("#image_" + asin).attr("src",  jsonResponse.data.album.images[1].url);
+           $("#image_" + asin).attr("alt",  jsonResponse.data.album.title);
+           $("#title_" + asin).append(jsonResponse.data.album.title + " by <a href=\"" +
+                                      jsonResponse.data.album.artists[0].url
+                                      + "\" target=\"_blank\">" +
+                                      jsonResponse.data.album.artists[0].name +
+                                      "</a>");
+           $("#sampleMusic_" + asin).attr("onclick",  "playItem('" + jsonResponse.data.album.id + "')");
+           $("#playMusic_" + asin).attr("href",  jsonResponse.data.album.url);
+        }
+    });
+    return false;
+};
+
+function playItem(item_id) {
+    console.log(item_id);
+    $("#AmazonMusicEmbed_FF_WebPortal").attr("src",  "https://music.amazon.com/embed/" +
+                                             item_id +
+                                             "/?ref=dm_ff_amazonmusic.webportal");
+                                             return false;
+};
+
+function followUser(user_id) {
+    $.ajax({
+           method: "PUT",
+           url: "https://api.music.amazon.dev/v1/me/followed/users/" + user_id,
+           headers: {
+                'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+                'Content-Type' : 'application/json',
+                'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+           error: function(data){
+                console.log("followUser error - " + JSON.stringify(data));
+                //$(location).attr("href", "gramazon-login.html");
+           },
+           success: function(data){
+                var jsonResponse = data;
+                console.log("followUser success - " + JSON.stringify(jsonResponse));
+                alert("you are now following this user");
+            }
+           });
+           return false;
+};
+
+
+function populateDropDown( jsonResponse ) {
+    for (let i in jsonResponse.drop_down_items) {
+        $("#recsDropDown").append($("<option>", {
+                                    value: jsonResponse.drop_down_items[i].file,
+                                    text: jsonResponse.drop_down_items[i].title
+                                    }));
+    }
+};
+
+function setupPage() {
+    console.log("setupPage start");
+    
+    $.getJSON("assets/json/manifest.json", function(data){
+              var jsonResponse = data;
+              console.log("success setupPage data - " + JSON.stringify(jsonResponse));
+              populateDropDown(jsonResponse);
+        }
+    );
+
+    console.log("add iframe for player");
+     $("#playerContainer").append(
+                                  "<iframe id=\"AmazonMusicEmbed_FF_WebPortal\" src=\"\" width=\"400px\" height=\"800px\" style=\"border:1px  solid rgba(0, 0, 0, 0.12);max-width:500px\" />");
+    console.log("setupPage end");
+	return false;
+};
+
+$( document ).ready( setupPage );
+</script>
+
+	</body>
+</html>
