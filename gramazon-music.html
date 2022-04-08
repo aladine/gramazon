@@ -115,7 +115,7 @@
                             <h2>Search for albums to add to your Taste Collection</h2>
                             
                             <form id="tc_search">
-                                Album Search : <input type="text" id="search_string" placeholder="albnum name or artist" />
+                                Album Search : <input type="text" id="search_string" placeholder="album name or artist" />
                                 <input type="button" id="update" value="Search (click to search)" onclick="searchForAlbums(this.form)" />
                             </form>
                             
@@ -221,7 +221,7 @@ function searchForAlbums(formData) {
         headers: {
             'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
             'Content-Type' : 'application/json',
-            'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+            'Authorization' : 'Bearer ' + getAccessToken() },
         error: function(data){
            console.log("searchForAlbums error - " + JSON.stringify(data));
            //$(location).attr("href", "gramazon-login.html");
@@ -230,6 +230,48 @@ function searchForAlbums(formData) {
             var jsonResponse = data;
             //console.log("jsonResponse - " + JSON.stringify(jsonResponse));
             addResultsToPage(jsonResponse);
+        }
+    });
+    return false;
+};
+
+
+function postSaveCollection() {
+    var tasteCollection = JSON.parse(localStorage.getItem("tasteCollection"));
+    var postUrl = "https://27p0a2mbdd.execute-api.us-east-1.amazonaws.com/Prod/save_collection";
+    $.ajax({
+        method: "POST",
+        url: postUrl,
+        dataType: "json",
+        data: jsonData,
+        headers: {
+            'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Bearer ' + getAccessToken() },
+        error: function(data){
+           console.log("postSaveCollection error - " + JSON.stringify(data));
+        },
+        success: function(data){
+            alert("Success");
+        }
+    });
+    return false;
+};
+
+function getCollection() {
+    $.ajax({
+        method: "GET",
+        url: "https://27p0a2mbdd.execute-api.us-east-1.amazonaws.com/Prod/get_collections",
+        headers: {
+            'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
+            'Content-Type' : 'application/json',
+            'Authorization' : 'Bearer ' + getAccessToken() },
+        error: function(data) {   
+            console.log("getCollection error - " + JSON.stringify(data));  
+        },
+        success: function(data) {
+            var jsonResponse = data;
+            console.log("jsonResponse - " + JSON.stringify(jsonResponse));
         }
     });
     return false;
@@ -264,12 +306,17 @@ function addToTasteCollection(albumId) {
     
     $("#" + albumId).appendTo("#collectionContent");
     $("#" + albumId).children("#title").children("#addToTC").hide();
+    $("#" + albumId).children("#title").append("<a href='' onclick='deleteTasteCollection(" + albumId + ")'>Remove</a>");
     $("#" + albumId).children("#title").append(descriptionFormForAlbum(albumId));
 
     console.log("addToTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
     localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
     return false;
 };
+
+function deleteTasteCollection(albumId) {
+    document.getElementById("#" + albumId).remove();
+}
 
 function descriptionFormForAlbum(albumId) {
     return "<form id=\"" + albumId + "_desc\"> " +
@@ -284,6 +331,7 @@ function updateTasteCollection() {
 
     console.log("updateTasteCollection tasteCollection b4 save " + JSON.stringify(tasteCollection));
     localStorage.setItem("tasteCollection", JSON.stringify(tasteCollection));
+    postSaveCollection();
     return false;
 };
 	
@@ -294,7 +342,7 @@ function getMe() {
 		headers: { 
    			'x-api-key' : 'amzn1.application.f8e006e000f943abb68f67a3eba61764',
 			'Content-Type' : 'application/json',
-			'Authorization' : 'Bearer ' + localStorage.getItem("accessToken") },
+			'Authorization' : 'Bearer ' + getAccessToken() },
 		error: function(data){        
    			$(location).attr("href", "gramazon-login.html");
 	   	},
@@ -309,11 +357,16 @@ function getMe() {
 	return false;
 };
 
+function getAccessToken() {
+    return localStorage.getItem("accessToken");
+    // return "Atza|IwEBIBdWfvnl9SWOvc0iZ7wc_wGEU3R-MfX2dACjxsdfLIUmD3AUTx9wR-SLkAavBzLRkVw__vH0BLj1hMz_7bOMKVvVb55jCcIP2fS4XiNL6Eh_LIChzXCsN_yXRmV37QvEL6iu3nA3L8kZBuBbuSY43oMGHR9T7e6ldbOm0lOkzbDDsjFggZEfEt3SRt89pyTJuhxj2UzAygw71KVsjZbypeHHeQfCvR1u1QqAnVJlIGlctBeF4aVXr9kQmG9rN_qxMFsusLjST2vPIy-Os3TmjoZ6WaocgBFnyJRLAjSDBbYy3AJHDqxyZ9KBW-of1R1m9a7wNMU4L4cQ_fB3QSveyyh1-yxKztmT_3Zr4pTz-9DiSCHo6Vz8oCMxQ1bQ9KUrLH4y6gLkcoRDooD6Qo0yaB-Hwl_O20ApnwCZS2YdPmiR4A";
+}
+
 $(document).on("keydown", "form", function(event) {
                return event.key != "Enter";
                });
                
-$( document ).ready( getMe );
+// $( document ).ready( getMe );
 </script>
 
 	</body>

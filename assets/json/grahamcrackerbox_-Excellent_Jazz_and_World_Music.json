@@ -1,0 +1,32 @@
+{
+    "name":"grahamcrackerbox ",
+    "id":"sp6hviwxhg4arlec65bx5u6hli",
+    "url":"https://music.amazon.com/profiles/sp6hviwxhg4arlec65bx5u6hli?ref=dm_ff_dev.grahamcrackerbox",
+    "title":"Excellent Jazz and World Music",
+    "description":"Some diverse finds from around the globe",
+    "filename":"grahamcrackerbox_-Excellent_Jazz_and_World_Music",
+    "rows":[
+        {
+            "title":"",
+            "type":"albums",
+            "items":[
+                {
+                    "asin":"B079HVPM3L",
+                    "description":""
+                },
+                {
+                    "asin":"B08Y5VQGWN",
+                    "description":""
+                },
+                {
+                    "asin":"B09D8DYXTK",
+                    "description":""
+                },
+                {
+                    "asin":"B085LQS89C",
+                    "description":""
+                }
+            ]
+        }
+    ]
+}

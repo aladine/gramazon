@@ -1,0 +1,28 @@
+{
+    "name" : "grahamcrackerbox",
+    "id" : "sp6hviwxhg4arlec65bx5u6hli",
+    "url": "https://music.amazon.com/profiles/sp6hviwxhg4arlec65bx5u6hli?ref=dm_ff_dev.grahamcrackerbox",
+    "title" : "New Music",
+    "description" : "New releases and reissues that you need to check out",
+    "filename":"grahamcrackerbox-new_music",
+    "rows" : [
+        {
+            "title" : "",
+            "type" : "albums",
+            "items" : [
+                {
+                    "asin" : "B09KW9BPLK",
+                    "description" : "Excellent eighth set from the U.K. alt-rock stalwarts that merges pain and paranoia with impeccable production. (from allmusic.com)"
+                },
+                {
+                    "asin" : "B09R39G1W3",
+                    "description" : "Smart punk with pop and indie rock overtones from members of Rocket from the Crypt, Pinback, and Against Me! (from allmusic.com)"
+                },
+                {
+                    "asin" : "B09T2L8RVH",
+                    "description" : "Brooklyn's Rex made an incredible leap forward from its lackluster first album to C, its second and best. Stretching out over 70 minutes, the album is a lush, almost lethargic showcase for singer/guitarist Curtis Harvey's sad songs. Front-loaded with the band's best songs (the stunning Morning and Ride Home) and brimming over with tasteful string arrangements, C seems to be the record Rex had been trying to make since its inception. Hypnotic and repetitive -- but engaging rather than boring because of it -- this grouping of songs would inspire slowcore imitators, but wouldn't be matched. (from allmusic.com)"
+                }
+            ]
+        }
+    ]
+}
